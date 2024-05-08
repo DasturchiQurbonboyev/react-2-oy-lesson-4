@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { FaRegHeart } from 'react-icons/fa'
 import { MdOutlineShoppingCart } from 'react-icons/md'
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleWishes } from '../../context/wishlistSlice';
+import { FcLike } from 'react-icons/fc';
 
 const category = [
     "All", "Bags", "Sneakers", "Belt", "Sunglasses"
 ]
+
 
 
 
@@ -17,6 +21,12 @@ const categoryProduct = category?.map((el, inx) => (
 
 
 function Product() {
+
+    const wishes = useSelector(state => state.wishlist.value)
+
+    const dispatch = useDispatch()
+
+
     const [data, setData] = useState([])
     useEffect(() => {
         axios.get("https://fakestoreapi.com/products")
@@ -32,7 +42,13 @@ function Product() {
                     <span className="absolute top-0 left-0 m-2 rounded-full bg-[#FF4858] px-2 text-center text-sm font-medium text-white">HOT</span>
                 </div>
                 <div className='poduct__cart flex justify-center items-center gap-5' >
-                    <FaRegHeart className='size-[10px] text-[#33A0FF] bg-[#fff] p-2 w-[52px] h-[52px] rounded-[50%] cursor-pointer    ' />
+                    <button onClick={() => dispatch(toggleWishes(el))} className='bg-white flex justify-center items-center rounded-[50%] h-[50px] w-[50px]    '>
+                        {
+                            wishes.some(w => w.id == el.id) ?
+                                <FcLike className="size-10" /> :
+                                <FaRegHeart className=' size-9 text-[#33A0FF]' />
+                        }
+                    </button>
                     <MdOutlineShoppingCart className='size-[10px] text-[#33A0FF] bg-[#fff] p-2 w-[52px] h-[52px] rounded-[50%] cursor-pointer    ' />
                 </div>
             </div>
