@@ -5,8 +5,53 @@ import switch2 from '../../accets/images/like/switch(1).png'
 import rate from '../../accets/images/like/rate.png'
 import { TiShoppingCart } from 'react-icons/ti'
 import { FaRegHeart } from 'react-icons/fa'
+import { useDispatch, useSelector } from 'react-redux'
+import { FcLike } from 'react-icons/fc'
+import { toggleWishes } from '../../context/wishlistSlice'
 
 function Like() {
+
+    const dispatch = useDispatch()
+    const wishes = useSelector(state => state.wishlist.value)
+    console.log(wishes);
+
+
+    const likes = wishes?.map((el) => (
+        <div className='flex items-center gap-[25px] border-b-2 pb-7'>
+            <div className='w-[35%] relative'>
+                <div className='bg-[#FF4858] w-[40px] h-5 flex items-center justify-center text-white absolute top-[11px] left-[25px] rounded-sm   '>
+                    <p>HOT</p>
+                </div>
+                <img className='w-full  ' src={el.image} alt="" />
+            </div>
+            <div className='w-[65%] flex flex-col gap-[15px]'>
+                <h2 className='text-[24px] text-[#22262A]    '>{el.title}</h2>
+                <div className='flex gap-3 items-center'>
+                    <img src={rate} alt="" />
+                    <label className='text-[#C1C8CE] text-[14px]  ' htmlFor="">0 reviews</label>
+                    <span className='text-[#33A0FF] text-[14px]   '>Submit a review</span>
+                </div>
+                <hr />
+                <div className='flex items-center gap-4'>
+                    <h3 className='text-[#40BFFF] text-[20px] font-[700]      '>${el.price}</h3>
+                    <del className='text-[#40BFFF] text-[14px]     '>${el.price + 10}</del>
+                    <p className='text-[#FB7181]'>24% Off</p>
+                </div>
+                <p>{el.description}</p>
+                <div className='flex items-center gap-[35px]'>
+                    <button className='flex items-center gap-2 bg-[#cfe5fa] px-[15px] py-[12px] text-[#33A0FF]  rounded-md '><TiShoppingCart /><span>Add To Cart</span></button>
+                    <button onClick={() => dispatch(toggleWishes(el))} className=' bg-[#cfe5fa] px-[15px] py-[15px] text-[#33A0FF]  rounded-md '>
+                        {
+                            wishes.some(w => w.id == el.id) ?
+                                <FcLike className="size-6" /> :
+                                <FaRegHeart className=' size-6 text-[#33A0FF]' />
+                        }
+                    </button>
+                </div>
+            </div>
+        </div>
+    ))
+
     return (
         <div className='kontainer'>
             <div className='py-[25px] flex items-start gap-[30px]'>
@@ -125,33 +170,9 @@ function Like() {
 
 
 
-                    <div className='flex items-center gap-[25px] border-b-2 pb-7'>
-                        <div className='w-[35%] relative'>
-                            <div className='bg-[#FF4858] w-[40px] h-5 flex items-center justify-center text-white absolute top-[11px] left-[25px] rounded-sm   '>
-                                <p>HOT</p>
-                            </div>
-                            <img className='w-full  ' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRx36KT3qDq3XTc3RtlSn0nVkfUy5OlrXgAPqu9sa8HlQ&s" alt="" />
-                        </div>
-                        <div className='w-[65%] flex flex-col gap-[15px]'>
-                            <h2 className='text-[24px] text-[#22262A]    '>Nike Airmax 270 React</h2>
-                            <div className='flex gap-3 items-center'>
-                                <img src={rate} alt="" />
-                                <label className='text-[#C1C8CE] text-[14px]  ' htmlFor="">0 reviews</label>
-                                <span className='text-[#33A0FF] text-[14px]   '>Submit a review</span>
-                            </div>
-                            <hr />
-                            <div className='flex items-center gap-4'>
-                                <h3 className='text-[#40BFFF] text-[20px] font-[700]      '>$299,43</h3>
-                                <del className='text-[#40BFFF] text-[14px]     '>$534,33</del>
-                                <p className='text-[#FB7181]'>24% Off</p>
-                            </div>
-                            <p>Nunc facilisis sagittis ullamcorper. Proin lectus ipsum, gravida et mattis vulputate, tristique ut lectus. Sed et lectus lorem nunc leifend laorevtr istique et congue. Vivamus adipiscin vulputate g nisl ut dolor ...</p>
-                            <div className='flex items-center gap-[35px]'>
-                                <button className='flex items-center gap-2 bg-[#cfe5fa] px-[15px] py-[12px] text-[#33A0FF]  rounded-md '><TiShoppingCart /><span>Add To Cart</span></button>
-                                <button className=' bg-[#cfe5fa] px-[15px] py-[15px] text-[#33A0FF]  rounded-md '><FaRegHeart /></button>
-                            </div>
-                        </div>
-                    </div>
+                    {
+                        likes
+                    }
 
                 </div>
             </div>
